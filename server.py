@@ -73,6 +73,8 @@ def register_user():
     fname = request.form['first_name']
     lname = request.form['last_name']
     email = request.form['email']
+    date_from = request.form['date_from']
+    date_to = request.form['date_to']
     password = request.form['password']
     confirm_password = request.form['confirm_password']
 
@@ -128,11 +130,13 @@ def register_user():
         # insert the information to database
         hash_password = bcrypt.generate_password_hash(password)
         mysql = connectToMySQL('flask_pets')
-        query = "INSERT INTO users(first_name, last_name, email, password, create_at) VALUES(%(fname)s, %(lname)s, %(email)s, %(hash_password)s, NOW())"
+        query = "INSERT INTO users(first_name, last_name, email, date_from, date_to, password, create_at) VALUES(%(fname)s, %(lname)s, %(email)s, %(date_from)s, %(date_to)s, %(hash_password)s, NOW())"
         data = {
             "fname": fname,
             "lname": lname,
             "email": email,
+            "date_from": date_from,
+            "date_to": date_to,
             "hash_password": hash_password
         }
         userid = mysql.query_db(query, data)

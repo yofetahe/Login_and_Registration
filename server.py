@@ -9,6 +9,8 @@ bcrypt = Bcrypt(app)
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$') 
 NAME_REGEX = re.compile(r'^[a-zA-Z ]')
+PASSWORD_1_REGEX = re.compile(r'^[A-Z]')
+PASSWORD_2_REGEX = re.compile(r'^[0-9]')
 
 @app.route("/")
 def index():
@@ -80,7 +82,8 @@ def register_user():
 
     # validate the information given
     errorCounter = 0
-
+    print(re.search('[A-Z]',password))
+    print(re.search('[0-9]',password))
     if len(fname) == 0:
         errorCounter += 1
         flash("First name is required", 'first_name')
@@ -105,6 +108,9 @@ def register_user():
     if len(password) == 0:
         errorCounter += 1
         flash("Password is required", 'password')
+    else:
+        if not re.search('[A-Z]',password) or not re.search('[0-9]',password):
+            flash("The password should include at least one capital letter and one number", 'password')
     if len(confirm_password) == 0:
         errorCounter += 1
         flash("Confirm passowrd is required", 'confirm_password')
